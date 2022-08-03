@@ -44,6 +44,8 @@ export const CartProvider = ({ children }) => {
       let newIndex = counter + 1;
       return checkCounter(newIndex);
     });
+
+    console.log("yes");
   };
 
   const handlePrevious = () => {
@@ -71,13 +73,17 @@ export const CartProvider = ({ children }) => {
   };
 
   const addCheckOutItem = (item) => {
-    setCheckOutDeets([...checkOutDeets, item]);
-    setCheckoutQty([...checkOutDeets, item]);
+    if (quantityCounter <= 0) {
+      return;
+    } else {
+      setCheckOutDeets([...checkOutDeets, item]);
+      setCheckoutQty([...checkOutDeets, item]);
+    }
   };
 
   // Handle add to cart
   const handleAddtoCart = () => {
-    const checkOutInfo = {
+    let checkOutInfo = {
       id: nanoid(),
       title: product.fallCollection.productTitle,
       unitPrice: discountedPrice,
@@ -90,10 +96,6 @@ export const CartProvider = ({ children }) => {
       setCardTester(false);
     }
 
-    if (quantityCounter === 0) {
-      return;
-    }
-
     addCheckOutItem(checkOutInfo);
 
     if (quantityCounter > 0) {
@@ -103,6 +105,12 @@ export const CartProvider = ({ children }) => {
     setTimeout(() => {
       setCardTester(true);
       setSuccessTester(false);
+
+      if (!successTester) {
+        return null;
+      }
+
+      // setSuccessTester(false);
     }, 4000);
   };
 

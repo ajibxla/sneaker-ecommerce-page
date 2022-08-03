@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { CartQtyContext } from "../context/CartQtyContext";
 import { AiFillDelete } from "react-icons/ai";
 import { nanoid } from "nanoid";
+import Nav from "./Nav";
 
 function CheckOutPage() {
   const [
@@ -25,6 +26,13 @@ function CheckOutPage() {
     checkOutDeets,
     handleDelete,
   ] = useContext(CartQtyContext);
+
+  const [checkOut, setCheckOut] = useState(false);
+
+  const handleCheckOut = () => {
+    setCheckOut(!checkOut);
+    console.log(checkOut);
+  };
 
   // console.log(checkOutDeets[0].qty, cartQty);
   const newItems = checkOutDeets.map((item) => {
@@ -53,6 +61,12 @@ function CheckOutPage() {
     );
   });
 
+  const btnStyle = {
+    color: "white",
+    textDecoration: "none",
+    fontWeight: 900,
+  };
+
   return (
     <section className="checkout-page">
       <div className="checkout-page-container">
@@ -61,16 +75,31 @@ function CheckOutPage() {
         </div>
         <div className="line"></div>
 
-        <div className="check-out-holder">
-          {checkOutDeets.length === 0 ? (
-            <p className="message">Your cart is empty</p>
-          ) : (
-            <div className="check-out-holder">
-              <div className="checkoutItems">{newItems}</div>
-              <button>Checkout</button>
+        {checkOut ? (
+          <article className="checkout">
+            <div className="final-checkout">
+              <p>
+                Thank you for shopping with us. Check back later for total 😅
+              </p>
             </div>
-          )}
-        </div>
+            <a style={btnStyle} href="/">
+              <button>
+                <p>Go Home</p>
+              </button>
+            </a>
+          </article>
+        ) : (
+          <div className="check-out-holder">
+            {checkOutDeets.length === 0 ? (
+              <p className="message">Your cart is empty</p>
+            ) : (
+              <div className="check-out-holder">
+                <div className="checkoutItems">{newItems}</div>
+                <button onClick={handleCheckOut}>Checkout</button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );
